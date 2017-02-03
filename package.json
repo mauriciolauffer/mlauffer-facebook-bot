@@ -1,0 +1,13 @@
+{
+  "name": "mlauffer-facebook-bot",
+  "version": "0.0.1",
+  "description": "Facebook Messenger Bot",
+  "private": true,
+  "author": "Mauricio Lauffer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mauriciolauffer/mlauffer-facebook-bot.git"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
