@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
   res.status(200).send('Deployed!');
 });
 
-router.get('/webhook/', (req, res) => {
+router.post('/webhook', (req, res) => {
   if (req.query["hub.verify_token"] === process.env.VERIFICATION_TOKEN) {
     console.log("Verified webhook");
     res.status(200).send(req.query["hub.challenge"]);
