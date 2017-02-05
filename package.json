@@ -8,6 +8,12 @@
     "type": "git",
     "url": "https://github.com/mauriciolauffer/mlauffer-facebook-bot.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "body-parser": "^1.16.0",
+    "compression": "^1.6.2",
+    "express": "^4.14.1",
+    "helmet": "^3.4.0",
+    "morgan": "^1.8.0"
+  },
   "devDependencies": {}
 }
