@@ -4,10 +4,10 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  res.status(200).send('Deployed!');
+  res.status(200).send('Lauffer Bot deployed!');
 });
 
-router.post('/webhook', (req, res) => {
+router.get('/webhook', (req, res) => {
   if (req.query["hub.verify_token"] === process.env.VERIFICATION_TOKEN) {
     console.log("Verified webhook");
     res.status(200).send(req.query["hub.challenge"]);
