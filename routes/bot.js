@@ -28,6 +28,8 @@ router.post('/webhook', (req, res) => {
       entry.messaging.forEach(function(event) {
         if (event.postback) {
           processPostback(event);
+        } else if (event.message) {
+          processMessage(event);
         }
       });
     });
@@ -36,6 +38,42 @@ router.post('/webhook', (req, res) => {
     res.status(400).send('Object is invalid.');
   }
 });
+
+function processMessage(event) {
+  if (!event.message.is_echo) {
+    var message = event.message;
+    var senderId = event.sender.id;
+
+    console.log("Received message from senderId: " + senderId);
+    console.log("Message is: " + JSON.stringify(message));
+
+    sendMessage(senderId, {text: "Sorry, I don't understand your request."});
+
+    // You may get a text or attachment but not both
+    /*if (message.text) {
+      var formattedMsg = message.text.toLowerCase().trim();
+
+      // If we receive a text message, check to see if it matches any special
+      // keywords and send back the corresponding movie detail.
+      // Otherwise, search for new movie.
+      switch (formattedMsg) {
+        case "plot":
+        case "date":
+        case "runtime":
+        case "director":
+        case "cast":
+        case "rating":
+          getMovieDetail(senderId, formattedMsg);
+          break;
+
+        default:
+          findMovie(senderId, formattedMsg);
+      }
+    } else if (message.attachments) {
+      sendMessage(senderId, {text: "Sorry, I don't understand your request."});
+    }*/
+  }
+}
 
 function processPostback(event) {
   let senderId = event.sender.id;
@@ -63,6 +101,8 @@ function processPostback(event) {
       let message = greeting + "My name is SP Movie Bot. I can tell you various details regarding movies. What movie would you like to know about?";
       sendMessage(senderId, {text: message});
     });
+  } else {
+    sendMessage(senderId, {text: 'Generic message for test'});
   }
 }
 
