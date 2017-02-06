@@ -20,7 +20,8 @@
     "express": "^4.14.1",
     "helmet": "^3.4.0",
     "morgan": "^1.8.0",
-    "node-fetch": "^1.6.3"
+    "node-fetch": "^1.6.3",
+    "request": "^2.79.0"
   },
   "devDependencies": {}
 }
