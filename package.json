@@ -1,6 +1,6 @@
 {
   "name": "mlauffer-facebook-bot",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Facebook Messenger Bot",
   "private": true,
   "author": "Mauricio Lauffer",
@@ -20,7 +20,6 @@
     "express": "^4.14.1",
     "helmet": "^3.4.0",
     "morgan": "^1.8.0",
-    "node-fetch": "^1.6.3",
     "request": "^2.79.0"
   },
   "devDependencies": {}
