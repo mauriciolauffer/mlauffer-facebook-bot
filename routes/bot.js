@@ -94,7 +94,7 @@ function processPostback(event) {
     sendMessage(senderId, {text: "Sweet! O que você gostaria de ver? Digite: 'mapa', 'capital', 'moeda', 'população' para mais detalhes."});
   } else if (payload === 'Incorreto') {
     sendMessage(senderId, {text: 'Oops! Deu zica! Tente digitar o nome do país corretamente  =)'});
-  } else if (payload === 'Incorreto') {
+  } else {
     sendMessage(senderId, {text: 'Oops! Alguma coisa deu errado...'});
   }
 }
