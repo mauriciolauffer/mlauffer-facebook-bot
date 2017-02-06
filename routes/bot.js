@@ -21,11 +21,10 @@ router.get('/webhook', (req, res) => {
 router.post('/webhook', (req, res) => {
   // Make sure this is a page subscription
   if (req.body.object === 'page') {
-    // Iterate over each entry
-    // There may be multiple entries if batched
-    req.body.entry.forEach(function (entry) {
+    // Iterate over each entry there may be multiple entries if batched
+    req.body.entry.forEach((entry) => {
       // Iterate over each messaging event
-      entry.messaging.forEach(function (event) {
+      entry.messaging.forEach((event) => {
         if (event.postback) {
           processPostback(event);
         } else if (event.message) {
@@ -79,7 +78,7 @@ function processPostback(event) {
         fields: 'first_name'
       },
       method: 'GET'
-    }, function (error, response, body) {
+    }, (error, response, body) => {
       let greeting;
       if (error) {
         console.log("Error getting user's name: " + error);
@@ -108,7 +107,7 @@ function sendMessage(recipientId, message) {
       recipient: {id: recipientId},
       message: message,
     }
-  }, function (error, response, body) {
+  }, (error, response, body) => {
     if (error) {
       console.log('Error sending message: ' + response.error);
     }
@@ -128,12 +127,12 @@ function getCountryDetail(userId, field) {
             payload: {
               template_type: 'generic',
               elements: [{
-                title: country.name.concat('(', country.nativeName, ')')
+                title: country.name.concat(' (', country.nativeName, ')')
               }]
             }
           }
         };
-        switch (formattedMsg) {
+        switch (field) {
           case 'mapa':
             let mapUrl = 'https://www.google.com.au/maps/';
             if (country.latlng.length) {
@@ -156,7 +155,6 @@ function getCountryDetail(userId, field) {
           case 'população':
             message.attachment.payload.elements[0].subtitle = 'População: ' + country.population;
             break;
-
           default:
             break;
         }
@@ -184,7 +182,7 @@ function findCountry(userId, countryName) {
             payload: {
               template_type: 'generic',
               elements: [{
-                title: country.name + '(' + country.nativeName + ')',
+                title: country.name.concat(' (', country.nativeName, ')'),
                 subtitle: 'Este é o país que você está procurando?',
                 image_url: 'http://www.geognos.com/api/en/countries/flag/' + country.alpha2Code + '.png',
                 buttons: [{
