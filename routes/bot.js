@@ -87,13 +87,15 @@ function processPostback(event) {
         let name = bodyObj.first_name;
         greeting = 'Olá ' + name + '. ';
       }
-      let message = greeting + 'Meu nome é TripBot, eu sou um robô. Eu posso te falar informações sobre alguns países. Qual país você gostaria de conhecer?';
+      let message = greeting + 'Meu nome é TripBot, eu sou um robô em teste. Eu posso te falar algumas informações sobre países. Qual país você gostaria de conhecer?';
       sendMessage(senderId, {text: message});
     });
   } else if (payload === 'Correto') {
     sendMessage(senderId, {text: "Sweet! O que você gostaria de ver? Digite: 'mapa', 'capital', 'moeda', 'população' para mais detalhes."});
   } else if (payload === 'Incorreto') {
     sendMessage(senderId, {text: 'Oops! Deu zica! Tente digitar o nome do país corretamente  =)'});
+  } else if (payload === 'Incorreto') {
+    sendMessage(senderId, {text: 'Oops! Alguma coisa deu errado...'});
   }
 }
 
@@ -165,7 +167,7 @@ function getCountryDetail(userId, field) {
         sendMessage(userId, {text: 'Oops! Deu algum erro por aqui...'});
       }
     } else {
-      sendMessage(userId, {text: 'Oops! Deu algum erro por aqui...'});
+      sendMessage(userId, {text: 'Oops! Alguma coisa deu errado...'});
     }
   });
 }
