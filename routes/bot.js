@@ -33,8 +33,6 @@ router.post('/webhook', (req, res) => {
       });
     });
     res.sendStatus(200);
-  } else {
-    res.status(400).send('Object is invalid.');
   }
 });
 
@@ -94,8 +92,6 @@ function processPostback(event) {
     sendMessage(senderId, {text: "Sweet! O que você gostaria de ver? Digite: 'mapa', 'capital', 'moeda', 'população' para mais detalhes."});
   } else if (payload === 'Incorreto') {
     sendMessage(senderId, {text: 'Oops! Deu zica! Tente digitar o nome do país corretamente  =)'});
-  } else {
-    sendMessage(senderId, {text: 'Oops! Alguma coisa deu errado...'});
   }
 }
 
@@ -164,10 +160,11 @@ function getCountryDetail(userId, field) {
 
       } else {
         console.log('Oops! Deu algum erro por aqui...');
-        sendMessage(userId, {text: 'Oops! Deu algum erro por aqui...'});
+        //sendMessage(userId, {text: 'Oops! Deu algum erro por aqui...'});
       }
     } else {
-      sendMessage(userId, {text: 'Oops! Alguma coisa deu errado...'});
+      console.log('Oops! Deu algum erro por aqui...');
+      //sendMessage(userId, {text: 'Oops! Alguma coisa deu errado...'});
     }
   });
 }
@@ -204,10 +201,11 @@ function findCountry(userId, countryName) {
 
       } else {
         console.log('Oops! Deu algum erro por aqui...');
-        sendMessage(userId, {text: 'Oops! Deu algum erro por aqui...'});
+        //sendMessage(userId, {text: 'Oops! Deu algum erro por aqui...'});
       }
     } else {
-      sendMessage(userId, {text: 'Oops! Deu algum erro por aqui...'});
+      console.log('Oops! Deu algum erro por aqui...');
+      //sendMessage(userId, {text: 'Oops! Deu algum erro por aqui...'});
     }
   });
 }
