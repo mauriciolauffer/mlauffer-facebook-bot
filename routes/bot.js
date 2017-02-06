@@ -20,7 +20,7 @@ router.get('/webhook', (req, res) => {
 
 router.post('/webhook', (req, res) => {
   // Make sure this is a page subscription
-  if (req.body.object == "page") {
+  if (req.body.object === "page") {
     // Iterate over each entry
     // There may be multiple entries if batched
     req.body.entry.forEach(function(entry) {
@@ -31,8 +31,9 @@ router.post('/webhook', (req, res) => {
         }
       });
     });
-
     res.sendStatus(200);
+  } else {
+    res.status(400).send('Object is invalid.');
   }
 });
 
