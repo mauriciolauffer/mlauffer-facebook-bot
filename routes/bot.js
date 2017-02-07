@@ -19,6 +19,7 @@ router.get('/webhook', (req, res) => {
 });
 
 router.post('/webhook', (req, res) => {
+  let sendResponse = false;
   // Make sure this is a page subscription
   if (req.body.object === 'page') {
     // Iterate over each entry there may be multiple entries if batched
@@ -26,13 +27,17 @@ router.post('/webhook', (req, res) => {
       // Iterate over each messaging event
       entry.messaging.forEach((event) => {
         if (event.postback) {
+          sendResponse = true;
           processPostback(event);
         } else if (event.message) {
+          sendResponse = true;
           processMessage(event);
         }
       });
     });
-    res.sendStatus(200);
+    if (sendResponse) {
+      res.sendStatus(200);
+    }
   }
 });
 
