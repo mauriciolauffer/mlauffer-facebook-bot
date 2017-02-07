@@ -19,20 +19,38 @@ router.get('/webhook', (req, res) => {
 });
 
 router.post('/webhook', (req, res) => {
-  let sendResponse = false;
+  let sendResponse = true;
   // Make sure this is a page subscription
   if (req.body.object === 'page') {
     // Iterate over each entry there may be multiple entries if batched
     req.body.entry.forEach((entry) => {
       // Iterate over each messaging event
       entry.messaging.forEach((event) => {
-        if (event.postback) {
+        if (event.optin) {
+          console.info('receivedAuthentication');
+        } else if (event.message) {
+          console.info('receivedMessage');
+          processMessage(event);
+        } else if (event.delivery) {
+          console.info('receivedDeliveryConfirmation');
+        } else if (event.postback) {
+          console.info('receivedPostback');
+          processPostback(event);
+        } else if (event.read) {
+          console.info('receivedMessageRead');
+        } else if (event.account_linking) {
+          console.info('receivedAccountLink');
+        } else {
+          console.info("Webhook received unknown messagingEvent: ", event);
+        }
+
+        /*if (event.postback) {
           sendResponse = true;
           processPostback(event);
         } else if (event.message) {
           sendResponse = true;
           processMessage(event);
-        }
+        }*/
       });
     });
     if (sendResponse) {

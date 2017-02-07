@@ -28,6 +28,7 @@ if (app.get('env') === 'development') {
       messageCode: err.messageCode,
       error: err.validationErrors || err
     };
+    console.info('Error: ' + err.status);
     res.status(err.status || 500).json(errorResponse);
   });
 }
@@ -39,6 +40,7 @@ app.use((err, req, res, next) => {
     messageCode: err.messageCode,
     error: err.validationErrors || {}
   };
+  console.info('Error: ' + err.status);
   res.status(err.status || 500).json(errorResponse);
 });
 
