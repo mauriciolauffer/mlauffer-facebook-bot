@@ -43,14 +43,6 @@ router.post('/webhook', (req, res) => {
         } else {
           console.info("Webhook received unknown messagingEvent: ", event);
         }
-
-        /*if (event.postback) {
-          sendResponse = true;
-          processPostback(event);
-        } else if (event.message) {
-          sendResponse = true;
-          processMessage(event);
-        }*/
       });
     });
     if (sendResponse) {
@@ -88,6 +80,7 @@ function processMessage(event) {
 }
 
 function processPostback(event) {
+  console.info('Payload is: ' + event.postback.payload);
   let senderId = event.sender.id;
   let payload = event.postback.payload;
   if (payload === 'Greeting') {
@@ -131,6 +124,8 @@ function sendMessage(recipientId, message) {
   }, (error, response, body) => {
     if (error) {
       console.log('Error sending message: ' + response.error);
+    } else {
+      console.log('Message sent');
     }
   });
 }
