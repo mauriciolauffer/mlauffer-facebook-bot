@@ -67,17 +67,18 @@ function processMessage(event) {
     // You may get a text or attachment but not both
     if (message.text) {
       let formattedMsg = message.text.toLowerCase().trim();
-      switch (formattedMsg) {
-        case 'mapa':
-        case 'capital':
-        case 'moeda':
-        case 'população':
-          getCountryDetail(senderId, formattedMsg);
-          break;
+      /*switch (formattedMsg) {
+       case 'mapa':
+       case 'capital':
+       case 'moeda':
+       case 'população':
+       getCountryDetail(senderId, formattedMsg);
+       break;
 
-        default:
-          findCountry(senderId, formattedMsg);
-      }
+       default:
+       findCountry(senderId, formattedMsg);
+       }*/
+      findCountry(senderId, formattedMsg);
     } else if (message.attachments) {
       sendMessage(senderId, {text: 'Desculpe, Não entendi sua requisição...'});
     } else {
@@ -111,10 +112,11 @@ function processPostback(event) {
       let message = greeting + 'Meu nome é TripBot, eu sou um robô em teste. Eu posso te falar algumas informações sobre países. Qual país você gostaria de conhecer?';
       sendMessage(senderId, {text: message});
     });
-  } else if (payload === 'Correto') {
-    sendMessage(senderId, {text: "Sweet! O que você gostaria de ver? Digite: 'mapa', 'capital', 'moeda', 'população' para mais detalhes."});
-  } else if (payload === 'Incorreto') {
+  } else if (payload === 'NOT') {
     sendMessage(senderId, {text: 'Oops! Deu zica! Tente digitar o nome do país corretamente  =)'});
+  }
+  else if (payload === 'Correto') {
+    sendMessage(senderId, {text: "Sweet! O que você gostaria de ver? Digite: 'mapa', 'capital', 'moeda', 'população' para mais detalhes."});
   } else {
     console.info('Not handled...');
   }
@@ -141,7 +143,7 @@ function sendMessage(recipientId, message) {
 
 function getCountryDetail(userId, field) {
   console.info('getCountryDetail...');
-  request('https://restcountries.eu/rest/v1/name/' + countryName, (error, response, body) => {
+  request('https://restcountries.eu/rest/v1/name/' + field, (error, response, body) => {
     if (!error && response.statusCode === 200) {
       let message;
       let countries = JSON.parse(body);
@@ -204,6 +206,12 @@ function findCountry(userId, countryName) {
       let countries = JSON.parse(body);
       let country = countries[0];
       if (country) {
+        let mapUrl = 'https://www.google.com.au/maps/';
+        if (country.latlng.length) {
+          mapUrl = mapUrl.concat('/search/', country.name);
+        } else {
+          mapUrl = mapUrl.concat('@', country.latlng[0], ',', country.latlng[1], ',7z');
+        }
         let message = {
           attachment: {
             type: 'template',
@@ -211,18 +219,24 @@ function findCountry(userId, countryName) {
               template_type: 'generic',
               elements: [{
                 title: country.name.concat(' (', country.nativeName, ')'),
-                subtitle: 'Este é o país que você está procurando?',
+                subtitle: 'Capital: ' + country.capital,
                 image_url: 'http://www.geognos.com/api/en/countries/flag/' + country.alpha2Code + '.png',
                 buttons: [{
-                  type: 'postback',
-                  title: 'Sim',
-                  payload: 'Correto'
-                }, {
-                  type: 'postback',
-                  title: 'Não',
-                  payload: 'Incorreto'
+                  type: 'web_url',
+                  url: mapUrl,
+                  title: 'Google Maps'
                 }]
-              }]
+                /*buttons: [{
+                 type: 'postback',
+                 title: 'Sim',
+                 payload: country.alpha3Code
+                 }, {
+                 type: 'postback',
+                 title: 'Não',
+                 payload: 'NOT'
+                 }]*/
+              }
+              ]
             }
           }
         };
