@@ -208,7 +208,7 @@ function findCountry(userId, countryName) {
       if (country) {
         let mapUrl = 'https://www.google.com.au/maps/';
         if (country.latlng.length) {
-          mapUrl = mapUrl.concat('/search/', country.name);
+          mapUrl = mapUrl.concat('search/', country.name);
         } else {
           mapUrl = mapUrl.concat('@', country.latlng[0], ',', country.latlng[1], ',7z');
         }
