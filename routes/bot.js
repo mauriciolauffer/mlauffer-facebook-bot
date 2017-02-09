@@ -106,8 +106,7 @@ function processPostback(event) {
         console.info("Error getting user's name: " + error);
       } else {
         let bodyObj = JSON.parse(body);
-        let name = bodyObj.first_name;
-        greeting = 'Olá ' + name + '. ';
+        greeting = 'Olá ' + bodyObj.first_name + '. ';
       }
       let message = greeting + 'Meu nome é TripBot, eu sou um robô em teste. Eu posso te falar algumas informações sobre países. Qual país você gostaria de conhecer?';
       sendMessage(senderId, {text: message});
@@ -224,7 +223,7 @@ function findCountry(userId, countryName) {
                 buttons: [{
                   type: 'web_url',
                   url: mapUrl,
-                  title: 'Google Maps'
+                  title: 'Onde fica???'
                 }]
                 /*buttons: [{
                  type: 'postback',
