@@ -19,11 +19,14 @@ router.get('/webhook', (req, res) => {
 });
 
 router.post('/webhook', (req, res) => {
+  console.log('webhook...');
   let sendResponse = true;
   // Make sure this is a page subscription
   if (req.body.object === 'page') {
+    console.log('page...');
     // Iterate over each entry there may be multiple entries if batched
     req.body.entry.forEach((entry) => {
+      console.log('entry...');
       // Iterate over each messaging event
       entry.messaging.forEach((event) => {
         if (event.optin) {
@@ -52,6 +55,8 @@ router.post('/webhook', (req, res) => {
 });
 
 function processMessage(event) {
+  console.log('processMessage...');
+  console.log('Message: ' + event.message.text);
   if (!event.message.is_echo) {
     let message = event.message;
     let senderId = event.sender.id;
@@ -75,6 +80,8 @@ function processMessage(event) {
       }
     } else if (message.attachments) {
       sendMessage(senderId, {text: 'Desculpe, Não entendi sua requisição...'});
+    } else {
+      console.log('Not handled...');
     }
   }
 }
@@ -108,6 +115,8 @@ function processPostback(event) {
     sendMessage(senderId, {text: "Sweet! O que você gostaria de ver? Digite: 'mapa', 'capital', 'moeda', 'população' para mais detalhes."});
   } else if (payload === 'Incorreto') {
     sendMessage(senderId, {text: 'Oops! Deu zica! Tente digitar o nome do país corretamente  =)'});
+  } else {
+    console.log('Not handled...');
   }
 }
 
@@ -131,6 +140,7 @@ function sendMessage(recipientId, message) {
 }
 
 function getCountryDetail(userId, field) {
+  console.log('getCountryDetail...');
   request('https://restcountries.eu/rest/v1/name/' + countryName, (error, response, body) => {
     if (!error && response.statusCode === 200) {
       let message;
@@ -188,6 +198,7 @@ function getCountryDetail(userId, field) {
 }
 
 function findCountry(userId, countryName) {
+  console.log('findCountry...');
   request('https://restcountries.eu/rest/v1/name/' + countryName, (error, response, body) => {
     if (!error && response.statusCode === 200) {
       let countries = JSON.parse(body);
