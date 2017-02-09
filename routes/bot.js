@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 
 router.get('/webhook', (req, res) => {
   if (req.query['hub.verify_token'] === process.env.VERIFICATION_TOKEN) {
-    console.log('Verified webhook');
+    console.info('Verified webhook');
     res.status(200).send(req.query['hub.challenge']);
   } else {
     console.error('Verification failed. The tokens do not match.');
@@ -19,14 +19,14 @@ router.get('/webhook', (req, res) => {
 });
 
 router.post('/webhook', (req, res) => {
-  console.log('webhook...');
+  console.info('webhook...');
   let sendResponse = true;
   // Make sure this is a page subscription
   if (req.body.object === 'page') {
-    console.log('page...');
+    console.info('page...');
     // Iterate over each entry there may be multiple entries if batched
     req.body.entry.forEach((entry) => {
-      console.log('entry...');
+      console.info('entry...');
       // Iterate over each messaging event
       entry.messaging.forEach((event) => {
         if (event.optin) {
@@ -55,14 +55,14 @@ router.post('/webhook', (req, res) => {
 });
 
 function processMessage(event) {
-  console.log('processMessage...');
-  console.log('Message: ' + event.message.text);
+  console.info('processMessage...');
+  console.info('Message: ' + event.message.text);
   if (!event.message.is_echo) {
     let message = event.message;
     let senderId = event.sender.id;
 
-    console.log('Received message from senderId: ' + senderId);
-    console.log('Message is: ' + JSON.stringify(message));
+    console.info('Received message from senderId: ' + senderId);
+    console.info('Message is: ' + JSON.stringify(message));
 
     // You may get a text or attachment but not both
     if (message.text) {
@@ -81,7 +81,7 @@ function processMessage(event) {
     } else if (message.attachments) {
       sendMessage(senderId, {text: 'Desculpe, Não entendi sua requisição...'});
     } else {
-      console.log('Not handled...');
+      console.info('Not handled...');
     }
   }
 }
@@ -102,7 +102,7 @@ function processPostback(event) {
     }, (error, response, body) => {
       let greeting;
       if (error) {
-        console.log("Error getting user's name: " + error);
+        console.info("Error getting user's name: " + error);
       } else {
         let bodyObj = JSON.parse(body);
         let name = bodyObj.first_name;
@@ -116,7 +116,7 @@ function processPostback(event) {
   } else if (payload === 'Incorreto') {
     sendMessage(senderId, {text: 'Oops! Deu zica! Tente digitar o nome do país corretamente  =)'});
   } else {
-    console.log('Not handled...');
+    console.info('Not handled...');
   }
 }
 
@@ -132,15 +132,15 @@ function sendMessage(recipientId, message) {
     }
   }, (error, response, body) => {
     if (error) {
-      console.log('Error sending message: ' + response.error);
+      console.info('Error sending message: ' + response.error);
     } else {
-      console.log('Message sent');
+      console.info('Message sent');
     }
   });
 }
 
 function getCountryDetail(userId, field) {
-  console.log('getCountryDetail...');
+  console.info('getCountryDetail...');
   request('https://restcountries.eu/rest/v1/name/' + countryName, (error, response, body) => {
     if (!error && response.statusCode === 200) {
       let message;
@@ -187,18 +187,18 @@ function getCountryDetail(userId, field) {
         sendMessage(userId, message);
 
       } else {
-        console.log('Oops! Deu algum erro por aqui...');
+        console.info('Oops! Deu algum erro por aqui...');
         //sendMessage(userId, {text: 'Oops! Deu algum erro por aqui...'});
       }
     } else {
-      console.log('Oops! Deu algum erro por aqui...');
+      console.info('Oops! Deu algum erro por aqui...');
       //sendMessage(userId, {text: 'Oops! Alguma coisa deu errado...'});
     }
   });
 }
 
 function findCountry(userId, countryName) {
-  console.log('findCountry...');
+  console.info('findCountry...');
   request('https://restcountries.eu/rest/v1/name/' + countryName, (error, response, body) => {
     if (!error && response.statusCode === 200) {
       let countries = JSON.parse(body);
@@ -229,11 +229,11 @@ function findCountry(userId, countryName) {
         sendMessage(userId, message);
 
       } else {
-        console.log('Oops! Deu algum erro por aqui...');
+        console.info('Oops! Deu algum erro por aqui...');
         //sendMessage(userId, {text: 'Oops! Deu algum erro por aqui...'});
       }
     } else {
-      console.log('Oops! Deu algum erro por aqui...');
+      console.info('Oops! Deu algum erro por aqui...');
       //sendMessage(userId, {text: 'Oops! Deu algum erro por aqui...'});
     }
   });
