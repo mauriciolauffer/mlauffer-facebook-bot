@@ -111,16 +111,17 @@ function sendMessage(recipientId, message) {
 
 function findCountry(userId, countryName) {
   console.info('findCountry...');
-  request('https://restcountries.eu/rest/v1/name/' + countryName, (error, response, body) => {
+  let url = 'https://restcountries.eu/rest/v1/name/' + countryName + '?fullText=true';
+  request(url, (error, response, body) => {
     if (!error && response.statusCode === 200) {
       let countries = JSON.parse(body);
       let country = countries[0];
       if (country) {
         let mapUrl = 'https://www.google.com.au/maps/';
         if (country.latlng.length) {
-          mapUrl = mapUrl.concat('search/', country.name);
-        } else {
           mapUrl = mapUrl.concat('@', country.latlng[0], ',', country.latlng[1], ',7z');
+        } else {
+          mapUrl = mapUrl.concat('search/', country.name);
         }
         let message = {
           attachment: {
