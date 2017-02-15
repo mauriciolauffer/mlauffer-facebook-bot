@@ -143,7 +143,7 @@ function findCountry(userId, countryName) {
         };
         sendMessage(userId, message);
       } else {
-        sendMessage(userId, {text: 'Oops! Deu algum erro por aqui...'});
+        sendMessage(userId, {text: 'Oops! Estranho... Não encontrei nenhum país chamado ' + countryName});
       }
     } else {
       sendMessage(userId, {text: 'Oops! Deu algum erro por aqui...'});
